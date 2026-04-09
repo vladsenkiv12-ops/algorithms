@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+#include <windows.h> 
+
+using namespace std;
+
+struct NOTE {
+    string name;       // Прізвище та ініціали
+    string phone;      // Номер телефону (тип string зручніший для перевірки останньої цифри)
+    int bday[3];       // День народження: масив з 3 чисел (день, місяць, рік)
+};
+
+int main() {
+        SetConsoleOutputCP(1251);
+        SetConsoleCP(1251);
+
+    const int SIZE = 10; // Кількість осіб за умовою
+    NOTE notes[SIZE];    // Створення масиву структур
+
+    cout << "--- Введення даних ---\n";
+    for (int i = 0; i < SIZE; i++) {
+        cout << "\nОсоба " << i + 1 << ":\n";
+
+        cout << "Прізвище та ініціали: ";
+        // Використовуємо 'cin >> ws', щоб очистити буфер від попередніх 
+        // символів нового рядка, інакше getline пропустить введення
+        getline(cin >> ws, notes[i].name);
+
+        cout << "Номер телефону: ";
+        getline(cin, notes[i].phone);
+
+        cout << "День народження (день місяць рік через пробіл): ";
+        cin >> notes[i].bday[0] >> notes[i].bday[1] >> notes[i].bday[2];
+    }
+
+    bool found = false; // Прапорець, який показує, чи знайшли ми хоча б одну людину
+
+    cout << "\n\n--- Результати пошуку ---\n";
+    cout << "Особи, номер телефону яких закінчується на '3':\n";
+
+    for (int i = 0; i < SIZE; i++) {
+        // Перевіряємо, чи рядок не порожній, і чи останній символ дорівнює '3'
+        if (!notes[i].phone.empty() && notes[i].phone.back() == '3') {
+            cout << "- Прізвище: " << notes[i].name
+                << " | Телефон: " << notes[i].phone
+                << " | Дата народження: " << notes[i].bday[0] << "."
+                << notes[i].bday[1] << "." << notes[i].bday[2] << "\n";
+            found = true; // Змінюємо прапорець, бо знайшли збіг
+        }
+    }
+
+    if (!found) {
+        cout << "Відповідних записів не знайдено.\n";
+    }
+
+    return 0;
+}
